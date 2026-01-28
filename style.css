@@ -23,3 +23,13 @@ body {
     linear-gradient(140deg, var(--bg-1), var(--bg-2), var(--bg-3));
   color: #fff;
 }
+
+.disqus-wrap {
+  width: min(1100px, 92vw);
+  margin: 2.5rem auto 4rem;
+  padding: 1.4rem 1.6rem;
+  background: rgba(14, 12, 20, 0.75);
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.35);
+}
