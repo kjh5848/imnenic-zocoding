@@ -284,6 +284,75 @@ class QuoteRecommender extends HTMLElement {
           word-break: break-all;
         }
 
+        .section-title {
+          margin: 0;
+          font-size: 1.4rem;
+          color: #f8f0e4;
+          font-family: 'Gowun Batang', serif;
+        }
+
+        .form-section {
+          display: grid;
+          gap: 1rem;
+        }
+
+        .form-card {
+          background: rgba(16, 14, 22, 0.85);
+          border-radius: 20px;
+          padding: 1.8rem;
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          box-shadow: 0 16px 30px rgba(0, 0, 0, 0.35);
+          display: grid;
+          gap: 1.2rem;
+        }
+
+        .form-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+          gap: 1rem;
+        }
+
+        label {
+          display: grid;
+          gap: 0.4rem;
+          font-size: 0.9rem;
+          color: #cfc6bb;
+        }
+
+        input,
+        textarea {
+          border: 1px solid rgba(255, 255, 255, 0.14);
+          background: rgba(10, 10, 16, 0.8);
+          color: #f4f1ed;
+          border-radius: 12px;
+          padding: 0.75rem 0.9rem;
+          font-size: 0.95rem;
+          outline: none;
+          transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        textarea {
+          min-height: 120px;
+          resize: vertical;
+          font-family: 'Gowun Dodum', sans-serif;
+        }
+
+        input:focus,
+        textarea:focus {
+          border-color: rgba(251, 188, 5, 0.6);
+          box-shadow: 0 0 0 2px rgba(251, 188, 5, 0.18);
+        }
+
+        .form-actions {
+          display: flex;
+          justify-content: flex-end;
+        }
+
+        .form-note {
+          font-size: 0.85rem;
+          color: rgba(255, 255, 255, 0.6);
+        }
+
         @media (max-width: 720px) {
           .featured {
             min-height: 220px;
@@ -307,6 +376,39 @@ class QuoteRecommender extends HTMLElement {
           </div>
         </div>
         <div class="grid" id="grid"></div>
+        <section class="form-section">
+          <h2 class="section-title">제휴 문의</h2>
+          <div class="form-card">
+            <div class="form-note">간단한 정보만 남겨주시면 빠르게 연락드릴게요.</div>
+            <form action="https://formspree.io/f/meegblkn" method="POST">
+              <div class="form-grid">
+                <label>
+                  이름
+                  <input type="text" name="name" placeholder="홍길동" required>
+                </label>
+                <label>
+                  이메일
+                  <input type="email" name="email" placeholder="you@example.com" required>
+                </label>
+                <label>
+                  회사/브랜드
+                  <input type="text" name="company" placeholder="회사명을 입력해주세요">
+                </label>
+                <label>
+                  관심 분야
+                  <input type="text" name="interest" placeholder="예: 캠페인, 협업, 제휴">
+                </label>
+              </div>
+              <label>
+                문의 내용
+                <textarea name="message" placeholder="협업 목적과 기대사항을 적어주세요." required></textarea>
+              </label>
+              <div class="form-actions">
+                <button type="submit">문의 보내기</button>
+              </div>
+            </form>
+          </div>
+        </section>
       </section>
     `;
   }
