@@ -125,6 +125,21 @@ class QuoteRecommender extends HTMLElement {
       }
     ];
 
+    this.themeMap = {
+      calm: ['마음', '휴식', '감사'],
+      tired: ['휴식', '마음', '정리'],
+      excited: ['도전', '성장', '자신감'],
+      anxious: ['용기', '마음', '자기다움'],
+      needFocus: ['몰입', '습관', '목표'],
+      needMotivation: ['성장', '끈기', '도전'],
+      needComfort: ['감사', '친절', '나눔'],
+      needClarity: ['정리', '선택', '목표'],
+      todayRest: ['휴식', '마음', '일상'],
+      todayGrow: ['배움', '성장', '호기심'],
+      todayChallenge: ['도전', '용기', '자신감'],
+      todayConnect: ['나눔', '친절', '감사']
+    };
+
     this.shadowRoot.innerHTML = `
       <style>
         :host {
@@ -137,7 +152,7 @@ class QuoteRecommender extends HTMLElement {
 
         .shell {
           display: grid;
-          gap: 2rem;
+          gap: 2.4rem;
         }
 
         header {
@@ -158,10 +173,75 @@ class QuoteRecommender extends HTMLElement {
           font-size: 1.05rem;
         }
 
-        .controls {
+        .section-title {
+          margin: 0;
+          font-size: 1.4rem;
+          color: #f8f0e4;
+          font-family: 'Gowun Batang', serif;
+        }
+
+        .mood-section {
+          display: grid;
+          gap: 1.4rem;
+          padding: 1.8rem;
+          border-radius: 22px;
+          background: rgba(18, 16, 26, 0.82);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          box-shadow: 0 18px 35px rgba(0, 0, 0, 0.35);
+        }
+
+        .question-card {
+          display: grid;
+          gap: 0.8rem;
+          padding: 1.2rem 1.4rem;
+          border-radius: 16px;
+          background: rgba(10, 9, 16, 0.8);
+          border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .question-card h3 {
+          margin: 0;
+          font-size: 1rem;
+          color: #e5dccf;
+        }
+
+        .option-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+          gap: 0.6rem;
+        }
+
+        .option {
+          position: relative;
+          display: grid;
+        }
+
+        .option input {
+          position: absolute;
+          opacity: 0;
+          pointer-events: none;
+        }
+
+        .option span {
+          display: block;
+          padding: 0.7rem 0.9rem;
+          border-radius: 12px;
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          color: #e9e2d8;
+          background: rgba(12, 12, 18, 0.7);
+          transition: all 0.2s ease;
+        }
+
+        .option input:checked + span {
+          border-color: rgba(251, 188, 5, 0.7);
+          background: rgba(251, 188, 5, 0.18);
+          color: #fff3d7;
+          box-shadow: 0 0 0 2px rgba(251, 188, 5, 0.12);
+        }
+
+        .form-actions {
           display: flex;
-          align-items: center;
-          gap: 1rem;
+          gap: 0.8rem;
           flex-wrap: wrap;
         }
 
@@ -182,54 +262,27 @@ class QuoteRecommender extends HTMLElement {
           transform: translateY(-1px);
         }
 
-        .featured {
-          position: relative;
-          border-radius: 22px;
-          overflow: hidden;
-          min-height: 260px;
-          padding: 2.2rem;
+        .ghost {
+          background: rgba(255, 255, 255, 0.1);
+          color: #fff1db;
+          box-shadow: none;
+        }
+
+        .results {
           display: grid;
-          align-content: end;
-          background: var(--feature-bg);
-          background-size: cover;
-          background-position: center;
-          box-shadow: 0 24px 45px rgba(0,0,0,0.45);
+          gap: 1rem;
         }
 
-        .featured::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(120deg, rgba(10, 9, 16, 0.2), rgba(10, 9, 16, 0.75));
-        }
-
-        .featured-content {
-          position: relative;
-          z-index: 1;
-          display: grid;
-          gap: 0.8rem;
-        }
-
-        .tag {
-          display: inline-flex;
+        .result-header {
+          display: flex;
           align-items: center;
-          padding: 0.3rem 0.8rem;
-          border-radius: 999px;
-          background: rgba(255, 255, 255, 0.18);
-          color: #fff6e0;
-          font-size: 0.85rem;
-          letter-spacing: 0.05em;
-          width: fit-content;
+          justify-content: space-between;
+          gap: 1rem;
+          flex-wrap: wrap;
         }
 
-        .quote {
-          font-size: clamp(1.4rem, 2vw, 2rem);
-          line-height: 1.5;
-          font-weight: 700;
-        }
-
-        .author {
-          color: #e8e1d6;
+        .result-summary {
+          color: #c3b9ad;
           font-size: 0.95rem;
         }
 
@@ -250,8 +303,6 @@ class QuoteRecommender extends HTMLElement {
           background: var(--bg);
           background-size: cover;
           background-position: center;
-          cursor: pointer;
-          transition: transform 0.2s ease, box-shadow 0.2s ease;
           box-shadow: 0 12px 30px rgba(0,0,0,0.35);
         }
 
@@ -262,11 +313,6 @@ class QuoteRecommender extends HTMLElement {
           background: linear-gradient(135deg, rgba(12, 10, 18, 0.35), rgba(12, 10, 18, 0.85));
         }
 
-        .card:hover {
-          transform: translateY(-4px);
-          box-shadow: 0 18px 40px rgba(0,0,0,0.45);
-        }
-
         .card-content {
           position: relative;
           z-index: 1;
@@ -274,21 +320,33 @@ class QuoteRecommender extends HTMLElement {
           gap: 0.5rem;
         }
 
-        .card .quote {
-          font-size: 1.1rem;
+        .tag {
+          display: inline-flex;
+          align-items: center;
+          padding: 0.3rem 0.8rem;
+          border-radius: 999px;
+          background: rgba(255, 255, 255, 0.18);
+          color: #fff6e0;
+          font-size: 0.85rem;
+          letter-spacing: 0.05em;
+          width: fit-content;
+        }
+
+        .quote {
+          font-size: clamp(1.2rem, 1.8vw, 1.6rem);
+          line-height: 1.5;
+          font-weight: 700;
+        }
+
+        .author {
+          color: #e8e1d6;
+          font-size: 0.95rem;
         }
 
         .image-url {
           font-size: 0.75rem;
           color: rgba(255, 255, 255, 0.6);
           word-break: break-all;
-        }
-
-        .section-title {
-          margin: 0;
-          font-size: 1.4rem;
-          color: #f8f0e4;
-          font-family: 'Gowun Batang', serif;
         }
 
         .form-section {
@@ -354,28 +412,62 @@ class QuoteRecommender extends HTMLElement {
         }
 
         @media (max-width: 720px) {
-          .featured {
-            min-height: 220px;
-            padding: 1.6rem;
+          .mood-section {
+            padding: 1.4rem;
           }
         }
       </style>
       <section class="shell">
         <header>
           <h1>명언 추천 서비스</h1>
-          <div class="subtitle">오늘의 마음에 닿는 명언을 추천하고, 어울리는 바탕화면을 함께 보여드립니다.</div>
+          <div class="subtitle">간단한 기분 체크 후, 오늘의 마음에 맞는 명언 3개를 추천합니다.</div>
         </header>
-        <div class="controls">
-          <button id="random">오늘의 명언 추천</button>
-        </div>
-        <div id="featured" class="featured" style="--feature-bg: none;">
-          <div class="featured-content">
-            <span class="tag">추천 명언</span>
-            <div id="featured-quote" class="quote"></div>
-            <div id="featured-author" class="author"></div>
+
+        <section class="mood-section">
+          <h2 class="section-title">오늘의 기분을 알려주세요</h2>
+          <form id="recommend-form">
+            <div class="question-card">
+              <h3>Q1. 지금 기분은 어떤가요?</h3>
+              <div class="option-grid">
+                <label class="option"><input type="radio" name="mood" value="calm" checked><span>차분해요</span></label>
+                <label class="option"><input type="radio" name="mood" value="tired"><span>지친 편이에요</span></label>
+                <label class="option"><input type="radio" name="mood" value="excited"><span>에너지가 넘쳐요</span></label>
+                <label class="option"><input type="radio" name="mood" value="anxious"><span>조금 불안해요</span></label>
+              </div>
+            </div>
+            <div class="question-card">
+              <h3>Q2. 지금 가장 필요한 것은?</h3>
+              <div class="option-grid">
+                <label class="option"><input type="radio" name="need" value="needFocus" checked><span>집중</span></label>
+                <label class="option"><input type="radio" name="need" value="needMotivation"><span>동기부여</span></label>
+                <label class="option"><input type="radio" name="need" value="needComfort"><span>위로</span></label>
+                <label class="option"><input type="radio" name="need" value="needClarity"><span>명확함</span></label>
+              </div>
+            </div>
+            <div class="question-card">
+              <h3>Q3. 오늘의 방향은?</h3>
+              <div class="option-grid">
+                <label class="option"><input type="radio" name="direction" value="todayRest" checked><span>쉬어가기</span></label>
+                <label class="option"><input type="radio" name="direction" value="todayGrow"><span>성장하기</span></label>
+                <label class="option"><input type="radio" name="direction" value="todayChallenge"><span>도전하기</span></label>
+                <label class="option"><input type="radio" name="direction" value="todayConnect"><span>관계 넓히기</span></label>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="submit">맞춤 추천 받기</button>
+              <button type="button" class="ghost" id="shuffle">다시 추천</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="results">
+          <div class="result-header">
+            <h2 class="section-title">추천 명언 3선</h2>
+            <div class="result-summary" id="summary"></div>
           </div>
-        </div>
-        <div class="grid" id="grid"></div>
+          <div class="grid" id="recommendations"></div>
+        </section>
+
         <section class="form-section">
           <h2 class="section-title">제휴 문의</h2>
           <div class="form-card">
@@ -414,27 +506,88 @@ class QuoteRecommender extends HTMLElement {
   }
 
   connectedCallback() {
-    this.shadowRoot.getElementById('random').addEventListener('click', () => this.pickRandom());
-    this.renderCards();
-    this.pickRandom();
+    const form = this.shadowRoot.getElementById('recommend-form');
+    const shuffleButton = this.shadowRoot.getElementById('shuffle');
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      this.recommend();
+    });
+    shuffleButton.addEventListener('click', () => this.recommend());
+    this.recommend();
   }
 
-  renderCards() {
-    const grid = this.shadowRoot.getElementById('grid');
+  getSelectedThemes() {
+    const form = this.shadowRoot.getElementById('recommend-form');
+    const data = new FormData(form);
+    const selectedThemes = new Set();
+
+    for (const value of data.values()) {
+      const themes = this.themeMap[value] || [];
+      themes.forEach(theme => selectedThemes.add(theme));
+    }
+
+    return selectedThemes;
+  }
+
+  getSelectionSummary() {
+    const form = this.shadowRoot.getElementById('recommend-form');
+    const selections = [];
+    const groups = ['mood', 'need', 'direction'];
+
+    groups.forEach(name => {
+      const checked = form.querySelector(`input[name="${name}"]:checked`);
+      if (checked) {
+        const label = checked.nextElementSibling;
+        if (label) {
+          selections.push(label.textContent.trim());
+        }
+      }
+    });
+
+    return selections;
+  }
+
+  recommend() {
+    const selectedThemes = this.getSelectedThemes();
+    const summaryEl = this.shadowRoot.getElementById('summary');
+    const selections = this.getSelectionSummary();
+
+    if (selections.length) {
+      summaryEl.textContent = `선택한 분위기: ${selections.join(' · ')}`;
+    } else {
+      summaryEl.textContent = '';
+    }
+
+    const scored = this.quotes.map(quote => ({
+      quote,
+      score: selectedThemes.has(quote.theme) ? 1 : 0,
+      seed: Math.random()
+    }));
+
+    scored.sort((a, b) => {
+      if (b.score !== a.score) return b.score - a.score;
+      return a.seed - b.seed;
+    });
+
+    const recommendations = scored.slice(0, 3).map(item => item.quote);
+    this.renderRecommendations(recommendations);
+  }
+
+  renderRecommendations(recommendations) {
+    const grid = this.shadowRoot.getElementById('recommendations');
     grid.innerHTML = '';
 
-    this.quotes.forEach((quote, index) => {
+    recommendations.forEach((quote, index) => {
       const card = document.createElement('article');
       card.className = 'card';
       card.style.setProperty('--bg', `url("${quote.image}")`);
-      card.addEventListener('click', () => this.showFeatured(index));
 
       const content = document.createElement('div');
       content.className = 'card-content';
 
       const tag = document.createElement('span');
       tag.className = 'tag';
-      tag.textContent = quote.theme;
+      tag.textContent = `추천 ${index + 1} · ${quote.theme}`;
 
       const text = document.createElement('div');
       text.className = 'quote';
@@ -455,22 +608,6 @@ class QuoteRecommender extends HTMLElement {
       card.appendChild(content);
       grid.appendChild(card);
     });
-  }
-
-  pickRandom() {
-    const randomIndex = Math.floor(Math.random() * this.quotes.length);
-    this.showFeatured(randomIndex);
-  }
-
-  showFeatured(index) {
-    const selected = this.quotes[index];
-    const featured = this.shadowRoot.getElementById('featured');
-    const quoteEl = this.shadowRoot.getElementById('featured-quote');
-    const authorEl = this.shadowRoot.getElementById('featured-author');
-
-    featured.style.setProperty('--feature-bg', `url("${selected.image}")`);
-    quoteEl.textContent = selected.text;
-    authorEl.textContent = `— ${selected.author} · ${selected.theme}`;
   }
 }
 
