@@ -1,514 +1,375 @@
-class RaffleDrawer extends HTMLElement {
+class QuoteRecommender extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
-    this.state = {
-      entries: [],
-      winner: null,
-    };
+    this.quotes = [
+      {
+        text: '작은 발걸음이 결국 큰 여정을 만든다.',
+        author: '익명',
+        theme: '성장',
+        image: 'https://source.unsplash.com/1600x900/?path,journey'
+      },
+      {
+        text: '포기하지 않는 마음이 가장 강한 재능이다.',
+        author: '익명',
+        theme: '끈기',
+        image: 'https://source.unsplash.com/1600x900/?mountain,trail'
+      },
+      {
+        text: '오늘의 몰입이 내일의 실력을 만든다.',
+        author: '익명',
+        theme: '몰입',
+        image: 'https://source.unsplash.com/1600x900/?workspace,focus'
+      },
+      {
+        text: '두려움은 방향을 알려주는 나침반이다.',
+        author: '익명',
+        theme: '용기',
+        image: 'https://source.unsplash.com/1600x900/?compass,adventure'
+      },
+      {
+        text: '좋은 질문은 이미 반쯤의 답이다.',
+        author: '익명',
+        theme: '호기심',
+        image: 'https://source.unsplash.com/1600x900/?library,books'
+      },
+      {
+        text: '휴식은 멈춤이 아니라 재충전이다.',
+        author: '익명',
+        theme: '휴식',
+        image: 'https://source.unsplash.com/1600x900/?ocean,calm'
+      },
+      {
+        text: '성공은 완벽함보다 꾸준함에 가깝다.',
+        author: '익명',
+        theme: '꾸준함',
+        image: 'https://source.unsplash.com/1600x900/?road,steps'
+      },
+      {
+        text: '나답게 생각한 순간부터 길이 열린다.',
+        author: '익명',
+        theme: '자기다움',
+        image: 'https://source.unsplash.com/1600x900/?sunrise,horizon'
+      },
+      {
+        text: '배움은 가장 오래 가는 투자다.',
+        author: '익명',
+        theme: '배움',
+        image: 'https://source.unsplash.com/1600x900/?education,study'
+      },
+      {
+        text: '감사는 하루를 밝히는 가장 빠른 빛이다.',
+        author: '익명',
+        theme: '감사',
+        image: 'https://source.unsplash.com/1600x900/?light,window'
+      },
+      {
+        text: '친절은 돌아오든 말든 이미 선물이다.',
+        author: '익명',
+        theme: '친절',
+        image: 'https://source.unsplash.com/1600x900/?hands,kindness'
+      },
+      {
+        text: '목표는 멀어도 방향은 오늘 정한다.',
+        author: '익명',
+        theme: '목표',
+        image: 'https://source.unsplash.com/1600x900/?stars,night'
+      },
+      {
+        text: '실패는 시도했다는 증거다.',
+        author: '익명',
+        theme: '도전',
+        image: 'https://source.unsplash.com/1600x900/?climb,rock'
+      },
+      {
+        text: '좋은 습관이 좋은 운을 만든다.',
+        author: '익명',
+        theme: '습관',
+        image: 'https://source.unsplash.com/1600x900/?morning,coffee'
+      },
+      {
+        text: '내 마음이 편해야 길도 길어진다.',
+        author: '익명',
+        theme: '마음',
+        image: 'https://source.unsplash.com/1600x900/?forest,green'
+      },
+      {
+        text: '나를 믿는 순간 속도가 달라진다.',
+        author: '익명',
+        theme: '자신감',
+        image: 'https://source.unsplash.com/1600x900/?speed,road'
+      },
+      {
+        text: '작은 정리가 큰 여유를 만든다.',
+        author: '익명',
+        theme: '정리',
+        image: 'https://source.unsplash.com/1600x900/?minimal,desk'
+      },
+      {
+        text: '지금의 선택이 내일의 풍경을 바꾼다.',
+        author: '익명',
+        theme: '선택',
+        image: 'https://source.unsplash.com/1600x900/?landscape,choice'
+      },
+      {
+        text: '함께 나누면 행복은 더 오래 남는다.',
+        author: '익명',
+        theme: '나눔',
+        image: 'https://source.unsplash.com/1600x900/?community,people'
+      },
+      {
+        text: '하나의 하루를 잘 살면 인생이 달라진다.',
+        author: '익명',
+        theme: '일상',
+        image: 'https://source.unsplash.com/1600x900/?daylight,city'
+      }
+    ];
 
     this.shadowRoot.innerHTML = `
       <style>
         :host {
           display: block;
-          width: 100%;
-          max-width: 720px;
+          width: min(1100px, 92vw);
           margin: 3rem auto;
-          color: #f3f1ee;
+          color: #f4f1ed;
           font-family: 'Gowun Dodum', sans-serif;
         }
 
-        .raffle-container {
-          background: linear-gradient(150deg, rgba(28, 25, 36, 0.96), rgba(12, 13, 20, 0.98));
-          border-radius: 24px;
-          padding: 2.5rem;
-          box-shadow: 0 30px 60px rgba(0,0,0,0.45);
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          backdrop-filter: blur(6px);
-          text-align: center;
+        .shell {
+          display: grid;
+          gap: 2rem;
+        }
+
+        header {
+          display: grid;
+          gap: 0.5rem;
+          text-align: left;
         }
 
         h1 {
-          color: #f8f5f0;
+          margin: 0;
+          font-size: clamp(2.2rem, 3vw, 3.2rem);
           font-family: 'Gowun Batang', serif;
-          font-size: 2.6rem;
-          margin-bottom: 0.4rem;
-          text-shadow: 0 0 18px rgba(251, 188, 5, 0.15);
+          color: #fff7ea;
         }
 
-        .sub-title {
-          color: #b9b1a8;
-          margin-bottom: 2.2rem;
-          font-size: 1rem;
+        .subtitle {
+          color: #c9c1b7;
+          font-size: 1.05rem;
         }
 
-        h2 {
-          color: #d7d2cb;
-          font-size: 1.1rem;
-          border-bottom: 1px solid rgba(255,255,255,0.08);
-          padding-bottom: 0.5rem;
-          margin-top: 2.2rem;
-          margin-bottom: 1rem;
-          text-align: left;
-        }
-
-        .input-area {
-          display: grid;
+        .controls {
+          display: flex;
+          align-items: center;
           gap: 1rem;
-          margin-bottom: 1.5rem;
-        }
-
-        .field {
-          display: grid;
-          gap: 0.4rem;
-          text-align: left;
-        }
-
-        label {
-          font-size: 0.85rem;
-          color: #bdb7b0;
-          letter-spacing: 0.02em;
-        }
-
-        input,
-        textarea {
-          border: 1px solid rgba(255, 255, 255, 0.12);
-          background: rgba(20, 20, 28, 0.85);
-          color: #f8f5f0;
-          padding: 0.85rem 1rem;
-          border-radius: 12px;
-          font-size: 1rem;
-          outline: none;
-          transition: all 0.2s ease;
-        }
-
-        textarea {
-          resize: vertical;
-          min-height: 70px;
-          font-family: 'Gowun Dodum', sans-serif;
-        }
-
-        input:focus,
-        textarea:focus {
-          border-color: rgba(251, 188, 5, 0.75);
-          box-shadow: 0 0 0 2px rgba(251, 188, 5, 0.2);
-        }
-
-        .hint {
-          font-size: 0.85rem;
-          color: #8f8a84;
+          flex-wrap: wrap;
         }
 
         button {
           border: none;
-          border-radius: 12px;
+          border-radius: 999px;
           padding: 0.9rem 1.6rem;
           font-size: 1rem;
           font-weight: 700;
           cursor: pointer;
           transition: all 0.2s ease;
-          box-shadow: 0 12px 20px rgba(0,0,0,0.25);
-        }
-
-        #add {
           background: linear-gradient(120deg, #fbbc05, #ff7b4f);
-          color: #1d1202;
+          color: #2d1600;
+          box-shadow: 0 18px 35px rgba(255, 123, 79, 0.3);
         }
 
-        #add:hover {
-          transform: translateY(-1px);
-          filter: brightness(1.05);
-        }
-
-        #add-dummies {
-          background: rgba(255, 255, 255, 0.12);
-          color: #f5f0e8;
-          margin-bottom: 1.8rem;
-        }
-
-        #add-dummies:hover {
-          background: rgba(255, 255, 255, 0.2);
-        }
-
-        .controls {
-          display: flex;
-          justify-content: center;
-          gap: 1rem;
-          margin-top: 2rem;
-          flex-wrap: wrap;
-        }
-
-        #draw {
-          background: linear-gradient(120deg, #34a853, #52c24c);
-          color: #0b1b0f;
-        }
-
-        #draw:hover {
+        button:hover {
           transform: translateY(-1px);
         }
 
-        #reset {
-          background: rgba(234, 67, 53, 0.9);
-          color: #fff;
-        }
-
-        #reset:hover {
-          transform: translateY(-1px);
-          background: rgba(234, 67, 53, 1);
-        }
-
-        #entries-list {
-          list-style: none;
-          padding: 1rem;
-          margin: 0;
-          max-height: 220px;
-          overflow-y: auto;
-          background: rgba(15, 15, 20, 0.8);
-          border-radius: 14px;
-          text-align: left;
+        .featured {
+          position: relative;
+          border-radius: 22px;
+          overflow: hidden;
+          min-height: 260px;
+          padding: 2.2rem;
           display: grid;
-          gap: 0.75rem;
+          align-content: end;
+          background: var(--feature-bg);
+          background-size: cover;
+          background-position: center;
+          box-shadow: 0 24px 45px rgba(0,0,0,0.45);
         }
 
-        #entries-list li {
-          padding-bottom: 0.75rem;
-          border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+        .featured::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(120deg, rgba(10, 9, 16, 0.2), rgba(10, 9, 16, 0.75));
+        }
+
+        .featured-content {
+          position: relative;
+          z-index: 1;
           display: grid;
-          gap: 0.35rem;
+          gap: 0.8rem;
         }
 
-        #entries-list li:last-child {
-          border-bottom: none;
-          padding-bottom: 0;
+        .tag {
+          display: inline-flex;
+          align-items: center;
+          padding: 0.3rem 0.8rem;
+          border-radius: 999px;
+          background: rgba(255, 255, 255, 0.18);
+          color: #fff6e0;
+          font-size: 0.85rem;
+          letter-spacing: 0.05em;
+          width: fit-content;
         }
 
-        .entry-name {
+        .quote {
+          font-size: clamp(1.4rem, 2vw, 2rem);
+          line-height: 1.5;
           font-weight: 700;
-          color: #f5efe8;
         }
 
-        .entry-wish {
-          color: #b7b1ab;
+        .author {
+          color: #e8e1d6;
           font-size: 0.95rem;
         }
 
-        .winner-area {
-          margin-top: 2.5rem;
+        .grid {
           display: grid;
-          gap: 1.5rem;
-          align-items: center;
+          grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+          gap: 1.2rem;
         }
 
-        #winner-name {
-          font-size: 2.4rem;
-          font-weight: 700;
-          color: #fbbc05;
-          text-shadow: 0 0 18px rgba(251, 188, 5, 0.45);
-          min-height: 3rem;
-        }
-
-        .winner-animation {
-          animation: winner-animation 0.5s ease-in-out;
-        }
-
-        @keyframes winner-animation {
-          0% { transform: scale(0.5); opacity: 0; }
-          100% { transform: scale(1); opacity: 1; }
-        }
-
-        .prize-card {
-          background: radial-gradient(circle at top, rgba(255, 205, 130, 0.2), rgba(20, 16, 25, 0.9));
+        .card {
+          position: relative;
+          min-height: 220px;
           border-radius: 18px;
-          padding: 1.6rem;
-          text-align: left;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          box-shadow: inset 0 0 20px rgba(255, 186, 97, 0.1);
-          opacity: 0;
-          transform: translateY(12px);
-          transition: all 0.4s ease;
+          overflow: hidden;
+          padding: 1.4rem;
+          display: grid;
+          align-content: end;
+          background: var(--bg);
+          background-size: cover;
+          background-position: center;
+          cursor: pointer;
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+          box-shadow: 0 12px 30px rgba(0,0,0,0.35);
         }
 
-        .prize-card.reveal {
-          opacity: 1;
-          transform: translateY(0);
+        .card::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(135deg, rgba(12, 10, 18, 0.35), rgba(12, 10, 18, 0.85));
         }
 
-        .prize-label {
-          font-size: 0.85rem;
-          letter-spacing: 0.1em;
-          text-transform: uppercase;
-          color: #e9c48f;
-          margin-bottom: 0.5rem;
+        .card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 18px 40px rgba(0,0,0,0.45);
         }
 
-        #prize-title {
-          font-size: 1.5rem;
-          font-weight: 700;
-          color: #fff4df;
-          margin-bottom: 0.7rem;
+        .card-content {
+          position: relative;
+          z-index: 1;
+          display: grid;
+          gap: 0.5rem;
         }
 
-        #prize-detail {
-          color: #e7ded2;
-          line-height: 1.6;
+        .card .quote {
+          font-size: 1.1rem;
         }
 
-        @media (max-width: 640px) {
-          .raffle-container {
-            padding: 2rem 1.6rem;
-          }
+        .image-url {
+          font-size: 0.75rem;
+          color: rgba(255, 255, 255, 0.6);
+          word-break: break-all;
+        }
 
-          h1 {
-            font-size: 2.1rem;
-          }
-
-          #winner-name {
-            font-size: 2rem;
+        @media (max-width: 720px) {
+          .featured {
+            min-height: 220px;
+            padding: 1.6rem;
           }
         }
       </style>
-      <div class="raffle-container">
-        <h1>꿈의 경품 추첨기</h1>
-        <p class="sub-title">작은 소망 하나로 시작되는 AI 맞춤형 경품 추첨</p>
-        <div class="input-area">
-          <div class="field">
-            <label for="name">이름</label>
-            <input type="text" id="name" placeholder="이름을 입력하세요">
-          </div>
-          <div class="field">
-            <label for="wish">당신의 작은 소망은?</label>
-            <textarea id="wish" placeholder="예: 밤하늘의 별 보는 것을 좋아해요."></textarea>
-            <span class="hint">소망은 당첨 시 AI가 분석해 꿈의 경품으로 바뀝니다.</span>
-          </div>
-          <button id="add">응모하기</button>
-        </div>
-        <button id="add-dummies">더미 데이터 추가</button>
-        <div class="entries-area">
-          <h2>응모자 목록</h2>
-          <ul id="entries-list"></ul>
-        </div>
+      <section class="shell">
+        <header>
+          <h1>명언 추천 서비스</h1>
+          <div class="subtitle">오늘의 마음에 닿는 명언을 추천하고, 어울리는 바탕화면을 함께 보여드립니다.</div>
+        </header>
         <div class="controls">
-          <button id="draw">추첨하기</button>
-          <button id="reset">초기화</button>
+          <button id="random">오늘의 명언 추천</button>
         </div>
-        <div class="winner-area">
-          <p id="winner-name"></p>
-          <div id="prize-card" class="prize-card" aria-live="polite">
-            <div class="prize-label">AI 꿈의 경품</div>
-            <div id="prize-title"></div>
-            <p id="prize-detail"></p>
+        <div id="featured" class="featured" style="--feature-bg: none;">
+          <div class="featured-content">
+            <span class="tag">추천 명언</span>
+            <div id="featured-quote" class="quote"></div>
+            <div id="featured-author" class="author"></div>
           </div>
         </div>
-      </div>
+        <div class="grid" id="grid"></div>
+      </section>
     `;
   }
 
   connectedCallback() {
-    this.shadowRoot.getElementById('add').addEventListener('click', () => this.addEntry());
-    this.shadowRoot.getElementById('add-dummies').addEventListener('click', () => this.addDummyData());
-    this.shadowRoot.getElementById('name').addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        this.addEntry();
-      }
-    });
-    this.shadowRoot.getElementById('wish').addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        this.addEntry();
-      }
-    });
-    this.shadowRoot.getElementById('draw').addEventListener('click', () => this.drawWinner());
-    this.shadowRoot.getElementById('reset').addEventListener('click', () => this.resetRaffle());
-
-    this.addDummyData();
+    this.shadowRoot.getElementById('random').addEventListener('click', () => this.pickRandom());
+    this.renderCards();
+    this.pickRandom();
   }
 
-  addEntry() {
-    const nameInput = this.shadowRoot.getElementById('name');
-    const wishInput = this.shadowRoot.getElementById('wish');
-    const name = nameInput.value.trim();
-    const wish = wishInput.value.trim();
+  renderCards() {
+    const grid = this.shadowRoot.getElementById('grid');
+    grid.innerHTML = '';
 
-    if (!name || !wish) {
-      alert('이름과 작은 소망을 모두 입력해주세요.');
-      return;
-    }
+    this.quotes.forEach((quote, index) => {
+      const card = document.createElement('article');
+      card.className = 'card';
+      card.style.setProperty('--bg', `url("${quote.image}")`);
+      card.addEventListener('click', () => this.showFeatured(index));
 
-    this.state.entries.push({ name, wish });
-    nameInput.value = '';
-    wishInput.value = '';
-    this.updateEntriesList();
-    nameInput.focus();
-  }
+      const content = document.createElement('div');
+      content.className = 'card-content';
 
-  addDummyData() {
-    const dummyEntries = [
-      { name: '김민준', wish: '밤하늘의 별을 더 가까이에서 보고 싶어요.' },
-      { name: '이서준', wish: '코딩 실력을 빠르게 올리고 싶어요.' },
-      { name: '박도윤', wish: '반려견과 멋진 사진을 남기고 싶어요.' },
-      { name: '최시우', wish: '혼자만의 우주 여행을 경험해보고 싶어요.' },
-      { name: '정예준', wish: '좋아하는 밴드와 함께 연주하고 싶어요.' },
-      { name: '강지호', wish: '서핑을 제대로 배워 보고 싶어요.' },
-      { name: '윤은우', wish: '나만의 향수를 만들고 싶어요.' },
-      { name: '한지안', wish: '친구들과 잊지 못할 캠핑을 가고 싶어요.' },
-      { name: '송아윤', wish: '다시 한 번 대학 시절처럼 여행하고 싶어요.' },
-      { name: '권지유', wish: '그림을 멋지게 그리고 싶어요.' }
-    ];
+      const tag = document.createElement('span');
+      tag.className = 'tag';
+      tag.textContent = quote.theme;
 
-    this.state.entries = this.state.entries.concat(dummyEntries);
-    this.updateEntriesList();
-  }
+      const text = document.createElement('div');
+      text.className = 'quote';
+      text.textContent = quote.text;
 
-  updateEntriesList() {
-    const entriesList = this.shadowRoot.getElementById('entries-list');
-    entriesList.innerHTML = '';
-    this.state.entries.forEach(entry => {
-      const li = document.createElement('li');
-      const nameSpan = document.createElement('span');
-      nameSpan.className = 'entry-name';
-      nameSpan.textContent = entry.name;
+      const author = document.createElement('div');
+      author.className = 'author';
+      author.textContent = `— ${quote.author}`;
 
-      const wishSpan = document.createElement('span');
-      wishSpan.className = 'entry-wish';
-      wishSpan.textContent = entry.wish;
+      const url = document.createElement('div');
+      url.className = 'image-url';
+      url.textContent = quote.image;
 
-      li.appendChild(nameSpan);
-      li.appendChild(wishSpan);
-      entriesList.appendChild(li);
+      content.appendChild(tag);
+      content.appendChild(text);
+      content.appendChild(author);
+      content.appendChild(url);
+      card.appendChild(content);
+      grid.appendChild(card);
     });
   }
 
-  drawWinner() {
-    if (this.state.entries.length === 0) {
-      alert('응모자가 없습니다!');
-      return;
-    }
-
-    const winnerNameEl = this.shadowRoot.getElementById('winner-name');
-    const prizeCard = this.shadowRoot.getElementById('prize-card');
-    const prizeTitleEl = this.shadowRoot.getElementById('prize-title');
-    const prizeDetailEl = this.shadowRoot.getElementById('prize-detail');
-
-    winnerNameEl.classList.remove('winner-animation');
-    prizeCard.classList.remove('reveal');
-    prizeTitleEl.textContent = '소망 분석 중...';
-    prizeDetailEl.textContent = 'AI가 당첨자의 소망을 해석하고 있습니다.';
-
-    let shuffleCount = 0;
-    const maxShuffles = 28;
-    const shuffleInterval = 60;
-
-    const shuffle = () => {
-      const randomIndex = Math.floor(Math.random() * this.state.entries.length);
-      winnerNameEl.textContent = this.state.entries[randomIndex].name;
-      shuffleCount++;
-      if (shuffleCount < maxShuffles) {
-        setTimeout(shuffle, shuffleInterval);
-      } else {
-        const winnerIndex = Math.floor(Math.random() * this.state.entries.length);
-        this.state.winner = this.state.entries[winnerIndex];
-        winnerNameEl.textContent = `${this.state.winner.name} 님 당첨!`;
-        winnerNameEl.classList.add('winner-animation');
-
-        setTimeout(() => {
-          const prize = this.generateDreamPrize(this.state.winner);
-          prizeTitleEl.textContent = prize.title;
-          prizeDetailEl.textContent = prize.detail;
-          prizeCard.classList.add('reveal');
-        }, 450);
-      }
-    };
-
-    shuffle();
+  pickRandom() {
+    const randomIndex = Math.floor(Math.random() * this.quotes.length);
+    this.showFeatured(randomIndex);
   }
 
-  resetRaffle() {
-    this.state.entries = [];
-    this.state.winner = null;
-    this.updateEntriesList();
-    const winnerNameEl = this.shadowRoot.getElementById('winner-name');
-    const prizeCard = this.shadowRoot.getElementById('prize-card');
-    const prizeTitleEl = this.shadowRoot.getElementById('prize-title');
-    const prizeDetailEl = this.shadowRoot.getElementById('prize-detail');
-    winnerNameEl.textContent = '';
-    winnerNameEl.classList.remove('winner-animation');
-    prizeTitleEl.textContent = '';
-    prizeDetailEl.textContent = '';
-    prizeCard.classList.remove('reveal');
-  }
+  showFeatured(index) {
+    const selected = this.quotes[index];
+    const featured = this.shadowRoot.getElementById('featured');
+    const quoteEl = this.shadowRoot.getElementById('featured-quote');
+    const authorEl = this.shadowRoot.getElementById('featured-author');
 
-  generateDreamPrize(entry) {
-    const theme = this.getWishTheme(entry.wish);
-    const extras = [
-      '전문가가 함께하는 1:1 맞춤 가이드',
-      '당신의 이름이 새겨진 작은 기념품',
-      '하루를 통째로 비워드리는 프라이빗 일정',
-      '당신의 소망에 영감을 받은 특별한 기록 영상'
-    ];
-    const bonus = extras[Math.floor(Math.random() * extras.length)];
-
-    return {
-      title: theme.title,
-      detail: `${entry.name} 님의 소망을 바탕으로 ${theme.scene} ${bonus}까지 준비했어요.`
-    };
-  }
-
-  getWishTheme(wish) {
-    const lowerWish = wish.toLowerCase();
-    const themes = [
-      {
-        keywords: ['코딩', '개발', '프로그래밍', '코드'],
-        title: 'AI 페어 프로그래밍 마스터 클래스',
-        scene: '세계적인 개발자와 함께 하루 동안 집중 해커톤을 진행하고',
-      },
-      {
-        keywords: ['반려', '강아지', '고양이', '펫'],
-        title: '반려친구와 함께하는 프라이빗 포토 살롱',
-        scene: '전문 포토그래퍼가 동행해 가장 사랑스러운 순간을 담아주고',
-      },
-      {
-        keywords: ['우주', '별', '행성', '달', '천문'],
-        title: '천문학자와 떠나는 별자리 여행',
-        scene: '숨겨진 관측 포인트로 떠나 쏟아지는 유성우를 함께 보고',
-      },
-      {
-        keywords: ['여행', '휴식', '바다', '캠핑'],
-        title: '나만을 위한 비밀 여행 지도',
-        scene: '당신만을 위한 맞춤 코스를 따라 하루 종일 힐링 여행을 즐기며',
-      },
-      {
-        keywords: ['음악', '노래', '공연', '밴드'],
-        title: '뮤지션과 함께하는 프라이빗 스튜디오 데이',
-        scene: '좋아하는 뮤지션과 함께 레코딩 스튜디오에서 한 곡을 완성하고',
-      },
-      {
-        keywords: ['그림', '일러', '디자인', '아트'],
-        title: '나만의 아틀리에 하루 체험',
-        scene: '작가와 함께 영감을 찾는 산책을 하고, 직접 작품을 완성하며',
-      },
-      {
-        keywords: ['운동', '러닝', '요가', '서핑', '등산'],
-        title: '퍼스널 액티비티 챌린지',
-        scene: '전문 코치와 함께 몸을 깨우는 맞춤형 챌린지를 즐기고',
-      },
-      {
-        keywords: ['요리', '디저트', '빵', '음식'],
-        title: '프라이빗 쿠킹 & 테이블 경험',
-        scene: '셰프와 함께 나만의 레시피를 만들고 직접 테이블을 꾸미며',
-      },
-    ];
-
-    for (const theme of themes) {
-      if (theme.keywords.some(keyword => lowerWish.includes(keyword))) {
-        return theme;
-      }
-    }
-
-    return {
-      title: '꿈의 하루를 디자인하는 맞춤 경험',
-      scene: '당신의 소망을 가장 빛나는 순간으로 재구성해 감동적인 하루를 선물하고',
-    };
+    featured.style.setProperty('--feature-bg', `url("${selected.image}")`);
+    quoteEl.textContent = selected.text;
+    authorEl.textContent = `— ${selected.author} · ${selected.theme}`;
   }
 }
 
-customElements.define('raffle-drawer', RaffleDrawer);
+customElements.define('quote-recommender', QuoteRecommender);
