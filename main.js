@@ -7,121 +7,121 @@ class QuoteRecommender extends HTMLElement {
         text: '작은 발걸음이 결국 큰 여정을 만든다.',
         author: '익명',
         theme: '성장',
-        image: 'https://source.unsplash.com/1600x900/?path,journey'
+        image: 'https://pixabay.com/ko/images/download/x-10060254_1920.jpg'
       },
       {
         text: '포기하지 않는 마음이 가장 강한 재능이다.',
         author: '익명',
         theme: '끈기',
-        image: 'https://source.unsplash.com/1600x900/?mountain,trail'
+        image: 'https://pixabay.com/ko/images/download/x-9303542_1920.jpg'
       },
       {
         text: '오늘의 몰입이 내일의 실력을 만든다.',
         author: '익명',
         theme: '몰입',
-        image: 'https://source.unsplash.com/1600x900/?workspace,focus'
+        image: 'https://pixabay.com/ko/images/download/x-10077647_1920.jpg'
       },
       {
         text: '두려움은 방향을 알려주는 나침반이다.',
         author: '익명',
         theme: '용기',
-        image: 'https://source.unsplash.com/1600x900/?compass,adventure'
+        image: 'https://pixabay.com/ko/images/download/x-10071302_1920.jpg'
       },
       {
         text: '좋은 질문은 이미 반쯤의 답이다.',
         author: '익명',
         theme: '호기심',
-        image: 'https://source.unsplash.com/1600x900/?library,books'
+        image: 'https://cdn.pixabay.com/photo/2022/08/23/17/47/forest-7406241_1280.jpg'
       },
       {
         text: '휴식은 멈춤이 아니라 재충전이다.',
         author: '익명',
         theme: '휴식',
-        image: 'https://source.unsplash.com/1600x900/?ocean,calm'
+        image: 'https://cdn.pixabay.com/photo/2022/11/02/06/42/toadstool-7564167_640.jpg'
       },
       {
         text: '성공은 완벽함보다 꾸준함에 가깝다.',
         author: '익명',
         theme: '꾸준함',
-        image: 'https://source.unsplash.com/1600x900/?road,steps'
+        image: 'https://cdn.pixabay.com/photo/2023/12/06/14/39/snow-8433815_640.jpg'
       },
       {
         text: '나답게 생각한 순간부터 길이 열린다.',
         author: '익명',
         theme: '자기다움',
-        image: 'https://source.unsplash.com/1600x900/?sunrise,horizon'
+        image: 'https://cdn.pixabay.com/photo/2016/03/15/18/12/forest-1258845_640.jpg'
       },
       {
         text: '배움은 가장 오래 가는 투자다.',
         author: '익명',
         theme: '배움',
-        image: 'https://source.unsplash.com/1600x900/?education,study'
+        image: 'https://cdn.pixabay.com/photo/2018/01/19/09/14/nature-3092017_640.jpg'
       },
       {
         text: '감사는 하루를 밝히는 가장 빠른 빛이다.',
         author: '익명',
         theme: '감사',
-        image: 'https://source.unsplash.com/1600x900/?light,window'
+        image: 'https://cdn.pixabay.com/photo/2022/07/09/18/14/forest-7311484_640.jpg'
       },
       {
         text: '친절은 돌아오든 말든 이미 선물이다.',
         author: '익명',
         theme: '친절',
-        image: 'https://source.unsplash.com/1600x900/?hands,kindness'
+        image: 'https://cdn.pixabay.com/photo/2023/10/06/15/15/disc-fungus-8298506_640.jpg'
       },
       {
         text: '목표는 멀어도 방향은 오늘 정한다.',
         author: '익명',
         theme: '목표',
-        image: 'https://source.unsplash.com/1600x900/?stars,night'
+        image: 'https://cdn.pixabay.com/photo/2023/09/06/17/37/pearl-fungus-8237670_640.jpg'
       },
       {
         text: '실패는 시도했다는 증거다.',
         author: '익명',
         theme: '도전',
-        image: 'https://source.unsplash.com/1600x900/?climb,rock'
+        image: 'https://cdn.pixabay.com/photo/2022/02/05/12/42/sea-of-clouds-6994730_640.jpg'
       },
       {
         text: '좋은 습관이 좋은 운을 만든다.',
         author: '익명',
         theme: '습관',
-        image: 'https://source.unsplash.com/1600x900/?morning,coffee'
+        image: 'https://cdn.pixabay.com/photo/2016/11/01/22/34/dirt-road-1789903_640.jpg'
       },
       {
         text: '내 마음이 편해야 길도 길어진다.',
         author: '익명',
         theme: '마음',
-        image: 'https://source.unsplash.com/1600x900/?forest,green'
+        image: 'https://cdn.pixabay.com/photo/2020/11/09/15/12/trail-5726987_640.jpg'
       },
       {
         text: '나를 믿는 순간 속도가 달라진다.',
         author: '익명',
         theme: '자신감',
-        image: 'https://source.unsplash.com/1600x900/?speed,road'
+        image: 'https://cdn.pixabay.com/photo/2012/03/01/00/21/bridge-19513_640.jpg'
       },
       {
         text: '작은 정리가 큰 여유를 만든다.',
         author: '익명',
         theme: '정리',
-        image: 'https://source.unsplash.com/1600x900/?minimal,desk'
+        image: 'https://cdn.pixabay.com/photo/2023/08/15/11/47/mushroom-8191823_640.jpg'
       },
       {
         text: '지금의 선택이 내일의 풍경을 바꾼다.',
         author: '익명',
         theme: '선택',
-        image: 'https://source.unsplash.com/1600x900/?landscape,choice'
+        image: 'https://cdn.pixabay.com/photo/2018/05/09/19/31/bavarian-forest-3385966_640.jpg'
       },
       {
         text: '함께 나누면 행복은 더 오래 남는다.',
         author: '익명',
         theme: '나눔',
-        image: 'https://source.unsplash.com/1600x900/?community,people'
+        image: 'https://cdn.pixabay.com/photo/2018/01/14/23/14/forest-3082836_640.jpg'
       },
       {
         text: '하나의 하루를 잘 살면 인생이 달라진다.',
         author: '익명',
         theme: '일상',
-        image: 'https://source.unsplash.com/1600x900/?daylight,city'
+        image: 'https://cdn.pixabay.com/photo/2024/02/07/18/00/mushroom-8559536_640.jpg'
       }
     ];
 
